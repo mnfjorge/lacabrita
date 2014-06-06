@@ -10,8 +10,7 @@
         <meta name="description" content="La Cabrita - a Mexican javascript idle game.">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <link rel="stylesheet" href="css/normalize.css">
-        <link rel="stylesheet" href="css/main.css">
+        <link rel="stylesheet" href="css/main.min.css">
         <script src="js/vendor/modernizr-2.6.2.min.js"></script>
     </head>
     <body>
@@ -23,15 +22,18 @@
 			<section id="content" class="clearfix">
 				<article>
 					<header>
-						<h1>La Cabrita</h1>
-						<h2 class="hidden">Um game de browser blablabla</h2>
+						<h1><span>La Cabrita <small>Um game de browser blablabla</small></span></h1>
 						<p>
-							<strong>Dinero: 400.000.000</strong>
+							Aguita: <span>400.000.000</span>
 							<br />
-							Dinero por seg: 815.815.815
+                            Gotas por seg: <span>815</span>
 						</p>
 					</header>
-					
+                    <a href="#hit" id="hit">
+                        <img src="img/scenario/goat-1.png" class="normal" />
+                        <img src="img/scenario/goat-1-mov.png" class="mov" />
+                    </a>
+                    <div id="scenario"></div>
 				</article>
 				<aside>
 					<header>
@@ -44,40 +46,19 @@
 					<section id="store" class="menu-item-content" style="display:block;">
 						<div class="store-group clearfix">
 							<h4>Energia</h4>
-							<ul>
-								<?php for($i = 0; $i < 3; $i++): ?>
-								<li>
-									<img class="thumb" src="img/items/bt-chapeu1.png" alt="Garrafa" /> <small>+200</small>
-									<a href="#"><img src="img/bt-comprar.png" alt="Comprar" /></a>
-									<span class="tooltip">Garrafa que ajuda na produção de dinero</span>
-								</li>
-								<?php endfor; ?>
+							<ul id="store-energy">
 							</ul>
 						</div>
 						<div class="store-group clearfix">
-							<h4>Visual</h4>
-							<ul>
-								<?php for($i = 0; $i < 3; $i++): ?>
-								<li>
-									<img class="thumb" src="img/items/bt-chapeu1.png" alt="Garrafa" /> <small>+200</small>
-									<a href="#"><img src="img/bt-comprar.png" alt="Comprar" /></a>
-									<span class="tooltip">Garrafa que ajuda na produção de dinero</span>
-								</li>
-								<?php endfor; ?>
+							<h4>Melhorias</h4>
+							<ul id="store-upgrades">
 							</ul>
 						</div>
-						<div class="store-group clearfix">
-							<h4>Cen&aacute;rio</h4>
-							<ul>
-								<?php for($i = 0; $i < 3; $i++): ?>
-								<li>
-									<img class="thumb" src="img/items/bt-chapeu1.png" alt="Garrafa" /> <small>+200</small>
-									<a href="#"><img src="img/bt-comprar.png" alt="Comprar" /></a>
-									<span class="tooltip">Garrafa que ajuda na produção de dinero</span>
-								</li>
-								<?php endfor; ?>
+						<!--div class="store-group clearfix">
+							<h4>Ajudantes</h4>
+							<ul id="store-helpers">
 							</ul>
-						</div>
+						</div-->
 					</section>
 					<section id="rank" class="menu-item-content">
 						<h4>Rank Mundial</h4>
@@ -101,9 +82,13 @@
 			</section>
 		</div>
 
+        <?php include_once('inc/tpl_energy.php'); ?>
+
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
         <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.10.2.min.js"><\/script>')</script>
-        <script src="js/plugins.js"></script>
+        <script src="js/plugins.min.js"></script>
+        <script src="js/vendor/mustache.min.js"></script>
+        <script src="js/game.js"></script>
         <script src="js/main.js"></script>
 
         <script>

@@ -1,43 +1,64 @@
 var app = {};
-app.Site = {
-	init: function() {
-		this.setEvents();
-	},
-	
-	setEvents: function() {
-		//bind tab menu click events
-		var els = app.Helpers.SCLASS('menu-item');
-		for(var i = 0; i < els.length; i++){
-			var el = els[i];
-			//set onclick in the <a> tag
-			el.firstChild.onclick = function() {
-				app.Site.hideMenuTabs(); //hide all tab contents
-				//extracting the id
-				var idx = this.href.indexOf('#');
-				var hash = this.href.substr(idx + 1, this.href.length - idx);
-				//show content for clicked button
-				app.Helpers.SID(hash).style.display = 'block';
-				return false; //we dont need the hash in the address bar
-			}
-		}
-	},
-	
-	hideMenuTabs: function() {
-		var els = app.Helpers.SCLASS('menu-item-content');
-		for(var i = 0; i < els.length; i++){
-			var el = els[i];
-			el.style.display = 'none';
-		}
-	}
+app.Site = function () {
+    this.init = function () {
+        this.setEvents();
+    };
+
+    this.setEvents = function () {
+        //bind tab menu click events
+        $('.menu-item a').click(function (e) {
+            e.preventDefault();
+            $('.menu-item.active').removeClass('active');
+            $(this).parent().addClass('active');
+            $('.menu-item-content').hide();
+            $($(this).attr('href')).show();
+        });
+
+        $('#hit')
+            .mousedown(function (e) {
+                $(this).addClass('clicking');
+            })
+            .mouseup(function (e) {
+                $(this).removeClass('clicking');
+            })
+            .click(function (e) {
+                e.preventDefault();
+            });
+
+        setInterval('appSite.render()', 300);
+        appSite.render();
+    };
+
+    this.render = function () {
+        this.renderStoreItems();
+    };
+
+    this.renderStoreItems = function () {
+        var item_template = $('#tpl-store-item').html();
+        Mustache.parse(item_template);
+
+        var energy = $('#store-energy').html('');
+        for (var i in app.Game.store_items.energy) {
+            var item = app.Game.store_items.energy[i];
+            var rendered = $(Mustache.render(item_template, item));
+            if (item.canBuy()) {
+                rendered.find('.unavailable').removeClass('unavailable');
+            }
+            energy.append(rendered);
+        }
+
+        var upgrade = $('#store-upgrade').html('');
+        for (var i in app.Game.store_items.upgrade) {
+            var item = app.Game.store_items.upgrade[i];
+            var rendered = $(Mustache.render(item_template, item));
+            if (item.canBuy()) {
+                rendered.find('.unavailable').removeClass('unavailable');
+            }
+            upgrade.append(rendered);
+        }
+    };
 };
-app.Helpers = {
-	//return the element with the provided id
-	SID: function(id) {
-		return document.getElementById(id);
-	},
-	//return the elements containing the provided CSS class
-	SCLASS: function(cls) {
-		return document.getElementsByClassName(cls);
-	}
-};
-app.Site.init();
+app.Game = new Game();
+
+var appSite = new app.Site();
+appSite.init();
